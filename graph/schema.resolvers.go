@@ -21,14 +21,3 @@ func (r *mutationResolver) CreateTodo(ctx context.Context, input model.NewTodo) 
 func (r *queryResolver) Todos(ctx context.Context) ([]*model.Todo, error) {
 	panic(fmt.Errorf("not implemented: Todos - todos"))
 }
-
-// Mutation returns MutationResolver implementation.
-func (r *Resolver) Mutation() MutationResolver { return &mutationResolver{r} }
-
-// Query returns QueryResolver implementation.
-func (r *Resolver) Query() QueryResolver { return &queryResolver{r} }
-
-type (
-	mutationResolver struct{ *Resolver }
-	queryResolver    struct{ *Resolver }
-)

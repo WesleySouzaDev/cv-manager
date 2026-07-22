@@ -1,0 +1,21 @@
+type Person {
+	id: ID!
+	name: String!
+	age: Int!
+	isMale: Boolean!
+}
+
+extend type Query {
+	person(id: ID!): Person!
+	persons: [Person!]!
+}
+
+input PersonInput {
+	name: String!
+	age: Int!
+	isMale: Boolean!
+}
+
+extend type Mutation {
+	createPerson(input: PersonInput!): Person!
+}
