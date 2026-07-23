@@ -10,6 +10,7 @@ import (
 	"github.com/99designs/gqlgen/graphql/handler/transport"
 	"github.com/99designs/gqlgen/graphql/playground"
 	"github.com/WesleySouzaDev/cv-manager/config"
+	"github.com/WesleySouzaDev/cv-manager/db"
 	"github.com/WesleySouzaDev/cv-manager/generated"
 	"github.com/WesleySouzaDev/cv-manager/resolvers"
 	"github.com/go-chi/chi/v5"
@@ -24,6 +25,11 @@ func main() {
 		port = config.DEFAULT_PORT
 	}
 
+	db, err := db.New(env.DBName)
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	router := chi.NewRouter()
 	router.Use(
 		cors.Handler(
@@ -35,7 +41,7 @@ func main() {
 		),
 	)
 
-	srv := handler.New(generated.NewExecutableSchema(generated.Config{Resolvers: &resolvers.Resolver{}}))
+	srv := handler.New(generated.NewExecutableSchema(generated.Config{Resolvers: &resolvers.Resolver{DB: db}}))
 
 	srv.AddTransport(transport.Options{})
 	srv.AddTransport(transport.GET{})
